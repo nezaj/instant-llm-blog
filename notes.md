@@ -1,3 +1,7 @@
+Claude easily adds the view page for a post
+
+--
+
 Claude seems to prefer `init<AppSchema>` instead of just `init`
 
 --

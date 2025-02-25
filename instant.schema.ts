@@ -5,7 +5,7 @@ const _schema = i.schema({
     posts: i.entity({
       title: i.string(),
       content: i.string(),
-      updatedAt: i.date(),
+      updatedAt: i.date().indexed()
     }),
   },
 });

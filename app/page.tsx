@@ -70,10 +70,12 @@ export default function Home() {
           {data.posts.map((post) => (
             <article key={post.id} className="border-b pb-8">
               <Link href={`/post/${post.id}`}>
-                <h2 className="text-2xl font-bold mb-2 hover:text-blue-600">{post.title}</h2>
+                <div className="flex justify-between items-center mb-2">
+                  <h2 className="text-xl font-bold mb-2 hover:text-blue-600">{post.title}</h2>
+                  {post.updatedAt && new Date(post.updatedAt).toLocaleDateString()}
+                </div>
               </Link>
               <div className="text-gray-500 mb-4">
-                {post.updatedAt && new Date(post.updatedAt).toLocaleDateString()}
               </div>
               <p className="text-gray-700">
                 {post.content.length > 200

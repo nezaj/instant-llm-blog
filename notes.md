@@ -1,3 +1,12 @@
+Making pagination work required a few prompts. Claude thought our Cursor
+component was relevant but it wasn't at all. It then tried to do an aggregate
+query with counts. After hinting to it to look closer at how pagination works in
+Instant it seemed to have understood
+
+> Count doesn't exist on posts, why are you loading that? Take a closer look at how pagination works on instant
+
+--
+
 Claude easily adds the view page for a post
 
 --

@@ -3,6 +3,7 @@
 
 import { init } from "@instantdb/react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import schema from "@/instant.schema";
 
 // Initialize InstantDB with your app ID and schema
@@ -11,15 +12,42 @@ const db = init({
   schema
 });
 
+const POSTS_PER_PAGE = 5;
+
 export default function Home() {
-  // Get posts from InstantDB
-  const { data, isLoading } = db.useQuery({
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const page = Number(searchParams.get('page') || '1');
+
+  // Get posts from InstantDB with pagination
+  const { data, isLoading, pageInfo } = db.useQuery({
     posts: {
       $: {
-        order: { updatedAt: 'desc' }
+        order: { updatedAt: 'desc' },
+        limit: POSTS_PER_PAGE,
+        offset: (page - 1) * POSTS_PER_PAGE
       }
     }
   });
+
+  // Check if there are more posts to determine "next page" availability
+  const { data: nextPageData } = db.useQuery({
+    posts: {
+      $: {
+        order: { updatedAt: 'desc' },
+        limit: 1,
+        offset: page * POSTS_PER_PAGE
+      }
+    }
+  });
+
+  const hasNextPage = nextPageData?.posts && nextPageData.posts.length > 0;
+  const hasPreviousPage = page > 1;
+
+  // Navigate to next or previous page
+  const navigateToPage = (newPage: number) => {
+    router.push(`/?page=${newPage}`);
+  };
 
   return (
     <main className="max-w-3xl mx-auto p-8">
@@ -59,6 +87,36 @@ export default function Home() {
               </div>
             </article>
           ))}
+
+          {/* Pagination controls */}
+          <div className="flex justify-between pt-4">
+            {hasPreviousPage && (
+              <button
+                onClick={() => navigateToPage(page - 1)}
+                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+              >
+                ← Newer Posts
+              </button>
+            )}
+            {!hasPreviousPage && (
+              <div></div> // Empty div to maintain layout with flexbox
+            )}
+
+            {hasNextPage && (
+              <button
+                onClick={() => navigateToPage(page + 1)}
+                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+              >
+                Older Posts →
+              </button>
+            )}
+          </div>
+
+          {(hasNextPage || hasPreviousPage) && (
+            <div className="text-center text-sm text-gray-500 mt-4">
+              Page {page}
+            </div>
+          )}
         </div>
       )}
     </main>

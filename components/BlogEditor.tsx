@@ -8,7 +8,7 @@ import Link from 'next/link';
 import schema, { AppSchema } from "@/instant.schema";
 
 // Initialize InstantDB with your app ID and schema
-const db = init<AppSchema>({
+const db = init({
   appId: process.env.NEXT_PUBLIC_INSTANT_APP_ID!,
   schema
 });

@@ -1,3 +1,7 @@
+Claude seems to prefer `init<AppSchema>` instead of just `init`
+
+--
+
 Asking claude to implement the index page produced mostly working code but one
 gotcha was that it tried to using ordering
 

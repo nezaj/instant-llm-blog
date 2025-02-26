@@ -3,6 +3,7 @@
 
 import { init } from "@instantdb/react";
 import Link from "next/link";
+import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import schema from "@/instant.schema";
 
@@ -14,7 +15,7 @@ const db = init({
 
 const POSTS_PER_PAGE = 5;
 
-export default function Home() {
+function Home() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const page = Number(searchParams.get('page') || '1');
@@ -122,5 +123,13 @@ export default function Home() {
         </div>
       )}
     </main>
+  );
+}
+
+export default function HomeWrapper() {
+  return (
+    <Suspense fallback={<div className="text-center">Loading...</div>}>
+      <Home />
+    </Suspense>
   );
 }

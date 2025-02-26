@@ -1,3 +1,9 @@
+Integrating auth is definitely a bit of a pain. Simply concatenating the docs
+and the client sdk code isn't enough to get it quite right. I think we'll need
+to tailor examples to make it work.
+
+--
+
 Making pagination work required a few prompts. Claude thought our Cursor
 component was relevant but it wasn't at all. It then tried to do an aggregate
 query with counts. After hinting to it to look closer at how pagination works in

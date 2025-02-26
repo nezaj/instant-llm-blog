@@ -20,7 +20,7 @@ export default function Home() {
   const page = Number(searchParams.get('page') || '1');
 
   // Get posts from InstantDB with pagination
-  const { data, isLoading, pageInfo } = db.useQuery({
+  const { data, isLoading } = db.useQuery({
     posts: {
       $: {
         order: { updatedAt: 'desc' },
